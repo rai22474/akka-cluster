@@ -1,4 +1,4 @@
-package io.wasupu;
+package io.wasupu.connections.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.concurrent.ExecutionException;
+import io.wasupu.connections.domain.*;
 
 @Service
 @Path("/api/connections")
@@ -16,7 +17,7 @@ public class ConnectionsRest {
 
     @GET
     public Response getAll() throws ExecutionException, InterruptedException {
-        ClusterStatus clusterStatus = connectionsRepository.get();
+        ConnectionsStatus clusterStatus = connectionsRepository.get();
         return Response.ok("{\"connections\":" + clusterStatus.getNumberOfConnections() + ",\"id\":\"" + clusterStatus.getId() + "\"}").build();
     }
 

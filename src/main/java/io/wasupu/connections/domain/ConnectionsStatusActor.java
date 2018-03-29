@@ -1,14 +1,14 @@
-package io.wasupu;
+package io.wasupu.connections.domain;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 
 import java.util.UUID;
 
-public class ClusterStatusActor extends AbstractActor {
+public class ConnectionsStatusActor extends AbstractActor {
 
     public static Props props() {
-        return Props.create(ClusterStatusActor.class);
+        return Props.create(ConnectionsStatusActor.class);
     }
 
     static public class IncreaseConnections {
@@ -25,7 +25,7 @@ public class ClusterStatusActor extends AbstractActor {
         return receiveBuilder()
                 .match(IncreaseConnections.class, increaseConnections -> this.numberOfConnections++)
                 .match(DecreaseConnections.class, decreaseConnections -> this.numberOfConnections--)
-                .match(GetStatus.class, getStatus -> getSender().tell(new ClusterStatus(id, numberOfConnections), getSelf()))
+                .match(GetStatus.class, getStatus -> getSender().tell(new ConnectionsStatus(id, numberOfConnections), getSelf()))
                 .build();
     }
 

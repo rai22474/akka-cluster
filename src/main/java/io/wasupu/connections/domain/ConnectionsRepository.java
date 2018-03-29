@@ -1,16 +1,15 @@
-package io.wasupu;
+package io.wasupu.connections.domain;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.pattern.PatternsCS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.ExecutionException;
 
-import static akka.pattern.PatternsCS.ask;
-
-import static io.wasupu.ClusterStatusActor.*;
+import static io.wasupu.connections.domain.ConnectionsStatusActor.*;
 
 @Component
 public class ConnectionsRepository {
@@ -22,15 +21,15 @@ public class ConnectionsRepository {
         clusterStatus.tell(new DecreaseConnections(), ActorRef.noSender());
     }
 
-    public ClusterStatus get() throws ExecutionException, InterruptedException {
-        return (ClusterStatus) ask(clusterStatus, new GetStatus(), 1000)
+    public ConnectionsStatus get() throws ExecutionException, InterruptedException {
+        return (ConnectionsStatus) PatternsCS.ask(clusterStatus, new GetStatus(), 1000)
                 .toCompletableFuture().get();
     }
 
     @PostConstruct
     public void createClusterStatusActor() {
         clusterStatus =
-                actorSystem.actorOf(props(), "clusterStatus");
+                actorSystem.actorOf(ConnectionsStatusActor.props(), "clusterStatus");
     }
 
     private ActorRef clusterStatus;

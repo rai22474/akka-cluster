@@ -1,10 +1,10 @@
-package io.wasupu;
+package io.wasupu.connections.domain;
 
-public class ClusterStatus {
+public class ConnectionsStatus {
 
 
-    public ClusterStatus(String id,
-                         Integer numberOfConnections) {
+    public ConnectionsStatus(String id,
+                             Integer numberOfConnections) {
         this.id = id;
         this.numberOfConnections = numberOfConnections;
     }
