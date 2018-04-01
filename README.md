@@ -1,6 +1,6 @@
 # akka-cluster
 
-Este proyecto es una prueba de concepto de cómo hacer un cluster con datos distribuidos que comparten todos sus nodos.
+Este proyecto es una prueba de concepto de cómo hacer un cluster con datos distribuidos que comparten todos sus nodos usando akka.
 
 Para ejecutarlo:
 
