@@ -42,9 +42,9 @@ public class ConnectionsStatusActor extends AbstractActor {
                     this.numberOfConnections--;
                     updateNumberOfConnections();
                 })
-                .match(GetStatus.class, getStatus -> getSender().tell(new ConnectionsStatus(id, numberOfConnections), getSelf()))
+                .match(GetStatus.class, getStatus -> getSender().tell(clusterStatus, getSelf()))
                 .match(Changed.class, changed -> changed.key().equals(dataKey),
-                        changed -> receiveChanged((Replicator.Changed<ORMultiMap<String,Integer>>) changed))
+                        changed -> receiveChanged((Replicator.Changed<ORMultiMap<String, Integer>>) changed))
                 .build();
     }
 
@@ -54,12 +54,11 @@ public class ConnectionsStatusActor extends AbstractActor {
         replicator.tell(subscribe, ActorRef.noSender());
     }
 
-    private void receiveChanged(Replicator.Changed<ORMultiMap<String,Integer>> c) {
-        var data = c.dataValue();
-        System.out.println(node.state());
-        System.out.println("***************************************************************************");
-        System.out.println("Current elements: {}" + data);
-        System.out.println("***************************************************************************");
+    private void receiveChanged(Replicator.Changed<ORMultiMap<String, Integer>> changed) {
+        changed.dataValue()
+                .getEntries()
+                .forEach((key, value) -> clusterStatus
+                        .refreshNode(new NodeStatus(key, value.stream().findFirst().get())));
     }
 
     private void updateNumberOfConnections() {
@@ -73,6 +72,9 @@ public class ConnectionsStatusActor extends AbstractActor {
 
         replicator.tell(update, getSelf());
     }
+
+
+    private ClusterStatus clusterStatus = new ClusterStatus();
 
     private Integer numberOfConnections = 0;
 

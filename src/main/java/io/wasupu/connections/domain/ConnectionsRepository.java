@@ -21,8 +21,8 @@ public class ConnectionsRepository {
         clusterStatus.tell(new DecreaseConnections(), ActorRef.noSender());
     }
 
-    public ConnectionsStatus get() throws ExecutionException, InterruptedException {
-        return (ConnectionsStatus) PatternsCS.ask(clusterStatus, new GetStatus(), 1000)
+    public ClusterStatus get() throws ExecutionException, InterruptedException {
+        return (ClusterStatus) PatternsCS.ask(clusterStatus, new GetStatus(), 1000)
                 .toCompletableFuture().get();
     }
 

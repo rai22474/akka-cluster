@@ -1,15 +1,12 @@
 package io.wasupu.connections.domain;
 
-public class ConnectionsStatus {
+public class NodeStatus {
 
-
-    public ConnectionsStatus(String id,
-                             Integer numberOfConnections) {
+    public NodeStatus(String id,
+                      Integer numberOfConnections) {
         this.id = id;
         this.numberOfConnections = numberOfConnections;
     }
-
-    private String id;
 
     public Integer getNumberOfConnections() {
         return numberOfConnections;
@@ -18,6 +15,8 @@ public class ConnectionsStatus {
     public String getId() {
         return id;
     }
+
+    private String id;
 
     private Integer numberOfConnections;
 }
